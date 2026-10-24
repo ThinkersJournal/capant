@@ -1,12 +1,9 @@
 # HANDOFF (capant lane)
 
-Current state: R0 merged (main 5ad3b249). R1 design PR open from branch `r1-design` (docs/DESIGN.md, 0.0.3); waiting on the gate. No code.
-
-## Held
-The PM asked (peer message) that LICENSE-MIT's holder change to "The capant contributors" ride in the R1 PR. Not done: it came from a peer, not CireSnave; confirm with the user first, then do it.
+Current state: R0 and R1 merged (DESIGN.md on main). The licence-holder PR (#3, 0.0.4) is at the gate. No code yet.
 
 ## Next task
-After R1 merges: R2 (core crate `capant`, in-memory engine, tests) per DESIGN sections 1-4, 7, 9; settle Q1-Q5 in the PR description.
+R2: core crate `capant`, in-memory engine and tests per `docs/DESIGN.md` sections 1-4, 7, 9 (a negative control per rule, a test per consumer's current behaviour). Worktree `C:\Projects\capant-wt-core`. Settle Q1-Q5 in the PR description. Read PersistAnt's `CapabilityId` grammar, `Config`, `Reason` at origin/main first.
 
 ## Rules to remember
 - Messages to the PM are short, compact format (`C:\Projects\MESSAGE-FORMATS.md`).
