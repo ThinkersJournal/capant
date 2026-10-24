@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.5
+
+- R2: core crate: ids, config facts, states with evidence, in-memory matrix, `resolve`, `evaluate`, `Evaluation` (per-consumer projections), tests with a negative control per rule. DESIGN section 3 simplified (no re-ranking of rejected providers) and Q1-Q5 decided.
+
 ## 0.0.4
 
 - LICENSE-MIT holder is "The capant contributors" (CireSnave, decision 263, 2026-10-24: "Go with your recommendations.").
