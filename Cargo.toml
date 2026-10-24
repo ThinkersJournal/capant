@@ -1,6 +1,6 @@
 [package]
 name = "capant"
-version = "0.0.4"
+version = "0.0.5"
 edition = "2024"
 rust-version = "1.88"
 description = "A capability engine: developers declare NEEDS in order of importance, providers declare what they can do, CapAnt returns the providers that satisfy the needs, with evidence."

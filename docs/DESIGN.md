@@ -16,7 +16,7 @@ Builds on `docs/SURVEY.md` (refs: PersistAnt `c6872b35`, AntSpawn `00b2aada`, Co
 ## 1. Data model (crate `capant`)
 
 ```text
-CapabilityId   validated string: [a-z0-9._-]+ , non-empty, <= 128 bytes (PersistAnt's grammar is read at R2 and wins on conflict)
+CapabilityId   validated string: a-z 0-9 _ . : - (PersistAnt's grammar plus `-`, which AntSpawn's ids use); no leading, trailing or doubled `.`
 ProviderId     string, stable and append-only by the consumer's rule (CapAnt only compares)
 Config         ordered k=v map, as PersistAnt's `config`/`metadata`
 
@@ -62,12 +62,11 @@ Only `Yes` satisfies. `No` and `Unverified` both reject, with different reasons;
 
 For each provider compute, per required id and per preferred id, a `NeedOutcome { id, role: Required | Preferred(rank), state, inherited: bool, evidence, reason_text }`. A provider **satisfies** when every required outcome is `Yes`.
 
-Sort key, ascending (stable, so table order breaks the final tie, as AntSpawn does today):
+Sort key, ascending (a total order ending in table position, as AntSpawn's stable sort does today). Rejected providers are not re-ranked by how few needs they miss, because AntSpawn orders them by `prefer` then registry order and the R2 test pins that:
 
 1. satisfies first;
-2. among satisfiers: the preferred outcomes as a vector in importance order, `Yes` before not-`Yes`, compared lexicographically (so the most important preferred capability dominates; matches PersistAnt's "preferences in the order of importance given");
-3. among rejected: fewer unmet required ids first, then the same preferred vector (so the "closest" is shown first in an explanation);
-4. table position.
+2. the preferred outcomes as a vector in importance order, `Yes` before not-`Yes`, compared lexicographically (so the most important preferred capability dominates; matches PersistAnt's "preferences in the order of importance given"); then, if `Need::preferred_providers` names the provider, its position there (AntSpawn's `prefer`, Q4);
+3. table position.
 
 **There is no closest match.** Rejected entries are returned so the UI can explain, but `Evaluation::satisfying()` is the only list a consumer may open from, and `open_named` (consumer side) calls `Evaluation::check(provider_id)` which returns `Err(Unmet)` for a rejected or unknown id (PersistAnt and AntSpawn's re-check at open time).
 
@@ -118,7 +117,7 @@ The R2 tests pin each consumer's **current** behaviour from its own `origin/main
 
 | Consumer | Today | Projection |
 |---|---|---|
-| PersistAnt | `providers()` returns qualified providers in table order, or `Err(Unmet)` listing **every** provider with each missing id, the matrix word (`Off(reason)`/`no-row`) and durability shortfall; no partial list. | `evaluation.into_unmet()` : `Ok(satisfying)` if non-empty else `Err(Unmet)` whose per-provider `missing` is the non-`Yes` required outcomes (`No(r)` → `Off(r)`, any `Unverified` → `no-row`; Q3). Qualified order is the **table order** in PersistAnt today and the **ranked** order here: a deliberate change, recorded for the migration PR. |
+| PersistAnt | `providers()` returns qualified providers in table order, or `Err(Unmet)` listing **every** provider with each missing id, the matrix word (`Off(reason)`/`no-row`) and durability shortfall; no partial list. | `evaluation.into_unmet()` : `Ok(satisfying)` if non-empty else `Err(Unmet)` whose per-provider `missing` is the non-`Yes` required outcomes (`No(r)` → `Off(r)`, any `Unverified` → `unverified(<why>)`, Q3 as decided in R2). Qualified order is the **table order** in PersistAnt today and the **ranked** order here: a deliberate change, recorded for the migration PR. |
 | AntSpawn | `providers()` returns every launcher, satisfying first, then `prefer` position, then registry order, each with `unmet: Vec<Capability>`; `open_named` re-checks. | Direct: `entries` mapped to `Provider { id, unmet = non-Yes required ids }`. Order identical because sort steps 1, 2, 4 reproduce `(!satisfies, prefer rank, registry)` **when `preferred` is a single ranked id list** (AntSpawn's `prefer` is a list of launcher ids, not capabilities: it maps to the ordered **provider** preference, see Q4). |
 | ConfigurAnt | `list_choices` returns choices best first, each with a reason; empty on error. | `qualified.map(|e| Choice::new(id, explain(e).join("; ")))`. |
 
@@ -148,10 +147,10 @@ Each test names the behaviour it protects and what breaking it does; the **negat
 | Compatibility / D5 | the **checked-in** `launchers.tsv` (AntSpawn, `00b2aada`) and `sqlx-sqlite.tsv` (PersistAnt, `c6872b35`) parse and round-trip content-equal (copied into `tests/fixtures/` with provenance in a README) | a file with a bad `enabled` word or a short row is an error, not a skipped row |
 | §7 adapters | one test per consumer in the table above, reproducing that consumer's observable behaviour on the same inputs | flipping a single row changes the projection in each |
 
-## 10. Open questions (decided in R2 unless the PM or CireSnave overrules)
+## 10. Open questions, and what R2 decided
 
-- **Q1** Where does measured-speed ranking live? Proposed: consumer-side tie-break hook (section 3), not in the engine.
-- **Q2** A `yes` row with no `probed_at` under `max_age`: stale or fresh? Proposed: **stale** if `max_age` is set (a row that cannot prove its age cannot prove it is fresh), fresh when `max_age = None`. Sections 2 and 6 already say this.
-- **Q3** PersistAnt's `Lookup::NoRow` vs `Off(Untested)` collapse to `Unverified` here; its `Unmet` text will say `unverified(<why>)` instead of `no-row`, a visible wording change for PersistAnt's migration PR.
-- **Q4** AntSpawn's `prefer` orders providers, not capabilities. Proposed: `Need` gets `preferred_providers: Vec<ProviderId>` consulted at sort step 2b (after capability preferences) so AntSpawn's order reproduces exactly; PersistAnt and ConfigurAnt leave it empty.
-- **Q5** Timestamp type without a time dependency: seconds since epoch (`i64`) in the engine, RFC 3339 in the file (a small hand-written parser, tested).
+- **Q1** Decided: consumer-side tie-break, `Evaluation::reorder_satisfiers` (stable; the rejected stay after the satisfiers).
+- **Q2** Decided: stale if `max_age` is set (a row that cannot prove its age cannot prove it is fresh), fresh when `max_age = None`.
+- **Q3** Decided: `Lookup::NoRow` and `Off(Untested)` both become `Unverified`; `Unmet` text says `unverified(<why>)` instead of `no-row`, a visible wording change for PersistAnt's migration PR (pinned by `persistant_shape_unmet_lists_every_provider_and_never_a_partial_list`).
+- **Q4** Decided: `Need::preferred_providers`, consulted after the capability preferences; PersistAnt and ConfigurAnt leave it empty.
+- **Q5** Timestamp is `i64` seconds since epoch in the engine (decided); RFC 3339 in the file, a small hand-written parser, is R3's.

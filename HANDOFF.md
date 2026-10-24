@@ -1,9 +1,9 @@
 # HANDOFF (capant lane)
 
-Current state: R0 and R1 merged (DESIGN.md on main). The licence-holder PR (#3, 0.0.4) is at the gate. No code yet.
+Current state: R0, R1 merged. R2 (core crate, in-memory engine, 0.0.5) is PR `r2-core`; waiting on the gate.
 
 ## Next task
-R2: core crate `capant`, in-memory engine and tests per `docs/DESIGN.md` sections 1-4, 7, 9 (a negative control per rule, a test per consumer's current behaviour). Worktree `C:\Projects\capant-wt-core`. Settle Q1-Q5 in the PR description. Read PersistAnt's `CapabilityId` grammar, `Config`, `Reason` at origin/main first.
+R3: matrix file reader/writer and `--check` per `docs/DESIGN.md` section 5-6 (nine-column TSV by column name, optional `probed_at tool_version environment inherited_from`, canonical writer, `Prober` trait, `generate` with carry-over, `--check` ignoring only `probed_at`). Add fixtures copied from AntSpawn `matrix/launchers.tsv` and PersistAnt `matrix/sqlx-sqlite.tsv` with their SHAs and licence note in `tests/fixtures/README.md`. Needs RFC 3339 timestamp parsing (hand-written, tested). Worktree `C:\Projects\capant-wt-matrix`.
 
 ## Rules to remember
 - Messages to the PM are short, compact format (`C:\Projects\MESSAGE-FORMATS.md`).
