@@ -61,6 +61,13 @@ impl Config {
         self
     }
 
+    /// This config without `key`.
+    #[must_use]
+    pub fn without(mut self, key: &str) -> Self {
+        self.0.remove(key);
+        self
+    }
+
     /// Whether every fact named here is also in `actual` with the same value. The empty config
     /// holds in everything.
     pub fn holds_in(&self, actual: &Config) -> bool {

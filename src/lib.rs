@@ -29,15 +29,20 @@
 
 mod config;
 mod engine;
+mod file;
+mod generate;
 mod id;
 mod matrix;
 mod state;
+pub mod time;
 
 pub use config::{Config, ConfigError};
 pub use engine::{
     CheckError, Choice, Context, DuplicateProvider, Entry, Evaluation, Need, NeedOutcome,
     NoSurface, Policy, Provider, ProviderUnmet, Resolved, Role, Surface, Unmet, evaluate, resolve,
 };
+pub use file::{ParseError, Parsed, Warning, parse, write};
+pub use generate::{Outcome, Prober, Report, check, generate};
 pub use id::{CapabilityId, IdError};
 pub use matrix::{Matrix, Row};
 pub use state::{Evidence, Reason, State, Timestamp, Why};

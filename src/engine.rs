@@ -199,8 +199,10 @@ fn row_state(row: &Row, ctx: &Context, allow_inherited: bool) -> (State, bool) {
                 return (State::Unverified(Why::NoEvidence), false);
             }
             let inherited = ev.inherited_from.is_some();
-            let here = if inherited {
-                allow_inherited
+            let here = if let Some(origin) = &ev.inherited_from {
+                // Carried over from an environment that is this one is not foreign; an origin
+                // that names nothing is unknown, so it needs consent.
+                allow_inherited || (!origin.is_empty() && origin.holds_in(&ctx.environment))
             } else {
                 ev.environment.holds_in(&ctx.environment)
             };

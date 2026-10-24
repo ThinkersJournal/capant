@@ -86,7 +86,7 @@ Measured speed ranking (PersistAnt `choose`/`bench`, unread in R0) is **not** in
 
 ## 5. Matrix file and probes
 
-**Format** (D5): header read by column name. Required: `subject_kind subject backend version config enabled reason metadata note`. Optional, in this order when written: `probed_at tool_version environment inherited_from`. Unknown columns are kept (`extra`) and written back after the known ones, sorted. `#` and blank lines skipped on read, dropped on write. `enabled` is `yes|no`. A row with `enabled=yes` and a `reason` is an error; `enabled=no` requires a non-empty `reason` (PersistAnt's rule). The `reason` text of AntSpawn maps to `Reason::Other`; the words `missing`/`wrong` map to their variants; `UNVERIFIED: <x>` maps to `Unverified(Other(x))` (an AntSpawn compatibility rule: those rows are `no` there, and stay a non-satisfying state here with the better name). `metadata` keeps `k=v;k=v`; `probe=` or `test=` is the evidence probe id; `os=` and `arch=` seed `environment` when the new column is absent.
+**Format** (D5): header read by column name. Required: `subject_kind subject backend version config enabled reason metadata note`. Optional, in this order when written: `probed_at tool_version environment inherited_from`. Unknown columns are kept (`extra`) and written back after the known ones, sorted. `#` and blank lines skipped on read, dropped on write. `enabled` is `yes|no`. A row with `enabled=yes` and a `reason` is an error; `enabled=no` requires a non-empty `reason` (PersistAnt's rule). The `reason` text of AntSpawn maps to `Reason::Other`; the words `missing`/`wrong` map to their variants; `UNVERIFIED: <x>` maps to `Unverified(Other(x))` (an AntSpawn compatibility rule: those rows are `no` there, and stay a non-satisfying state here with the better name). `metadata` keeps `k=v;k=v`; `probe=` (else `test=`) is the evidence probe id and is written back as `probe=`; every other key is kept. `os=` and `arch=` in old metadata stay informational (R3 decision: seeding `environment` from them would silently stop PersistAnt's Linux-probed rows from counting on any other OS); only the `environment` column is a claim about where a row holds. `inherited_from` is `?` when the origin is unknown.
 
 Duplicate rows: **not an error** (PersistAnt merges files; AntSpawn rejects). Duplicates for the same `(kind, subject, backend, version, config)` are resolved by section 2 step 4; the reader reports them in a `warnings` list and `--check` fails on them (a generated file has none).
 
@@ -96,15 +96,15 @@ Writer is canonical and deterministic: parse then write then parse is identity; 
 
 ```text
 trait Prober { fn probe(&self, provider: &Provider, cap: &CapabilityId, ctx: &Context) -> Outcome; }
-enum Outcome { Pass(Evidence), Fail { reason: Reason, evidence: Evidence }, Inconclusive(Why), NotProbed(Why) }
+enum Outcome { Pass(Evidence), Fail { reason: Reason, evidence: Evidence }, Unverified { why: Why, evidence: Evidence } }  // `Unverified` covers an inconclusive probe and a missing one
 ```
 
-`Inconclusive` is how AntSpawn's network probe says "this host cannot connect, so the control failed": it becomes `Unverified(NoControl)` and is **never** `No` (a failed control proves nothing). A probe that panics or times out is `Inconclusive`, never `Pass`.
+`Outcome::Unverified` is how AntSpawn's network probe says "this host cannot connect, so the control failed": it becomes `Unverified(NoControl)` and is **never** `No` (a failed control proves nothing). A probe that panics or times out is `Inconclusive`, never `Pass`.
 
 **Generate and `--check`** (`capant::generate(table, caps, prober, committed, ctx) -> GeneratedMatrix`; the CLI wrapper is the consumer's example, as today):
 
 1. For each provider the prober can reach, probe every declared capability; no probe for a capability gives `Unverified(Untested)` with `reason = "no probe for this capability yet"`.
-2. For a provider the machine cannot probe, **carry over** its committed rows if they are complete (one per declared capability) and every `yes` has probe evidence (AntSpawn's rule), setting `inherited_from = ctx.environment-of-the-original` (the row's own `environment`), so the carried `yes` is visible and only counts for a need with `allow_inherited`. Otherwise rebuild them `Unverified(NotSetUp)`.
+2. For a provider the machine cannot probe, **carry over** its committed rows if they are complete (one per declared capability) and every `yes` has probe evidence (AntSpawn's rule), setting `inherited_from` to the row's own `environment` (`?` if it has none) on each carried `yes`, never re-stamping `probed_at`. A carried `yes` counts for a need with `allow_inherited`, **or when its origin names facts that hold in the current environment** (R3 refinement: the Windows machine that probed `account` reads its own committed file without consent; an origin of `?` always needs consent). Otherwise rebuild them `Unverified(NotSetUp)`.
 3. `--check` compares the committed file with the generated one **ignoring `probed_at` only** (it changes every run); every other column must be identical, and any warning fails. It also fails when a committed row `Yes` is stale under `ctx.policy`, reporting the rows. Exit codes: 0 equal, 1 differs (prints the generated text), 2 usage/setup.
 
 ## 6. Staleness, concretely

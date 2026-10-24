@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 //! The recorded facts: rows, in memory. (Reading and writing the file is R3.)
 
+use std::collections::BTreeMap;
+
 use crate::{CapabilityId, Config, Evidence, State};
 
 /// One recorded fact: for this subject, on this backend, version and config, this state, earned
@@ -24,6 +26,10 @@ pub struct Row {
     pub evidence: Evidence,
     /// Free text.
     pub note: String,
+    /// `metadata` facts that are not evidence (anything but the probe id), kept as read.
+    pub metadata: Config,
+    /// Columns the engine does not know, kept as read and written back sorted.
+    pub extra: BTreeMap<String, String>,
 }
 
 impl Row {
@@ -43,6 +49,8 @@ impl Row {
             state,
             evidence: Evidence::default(),
             note: String::new(),
+            metadata: Config::new(),
+            extra: BTreeMap::new(),
         }
     }
 
