@@ -1,6 +1,6 @@
 # HANDOFF (capant lane)
 
-Current state: R0-R3 merged, capant 0.0.6 published, AntSpawn migrated (antspawn#24). 0.0.7 (`Report::carried`) is PR `r0-carried`; waiting on the gate, then the PM publishes.
+Current state: R0-R3 merged; capant 0.0.6 and 0.0.7 published; AntSpawn migrated (antspawn#24). The `portfolio` job is repinned to coderipper@30e012b7 (PM notice).
 
 ## Next task
 R4 continues in other lanes: PersistAnt step 1 (parse/write via capant, no behaviour change; TASK relayed by the PM to the persistant lane, 0.9.40 proposed), then ConfigurAnt after a PersistAnt release. This lane's part: answer API questions, and when PersistAnt step 1 merges, draft the step-2 [TASK] (selection via `capant::evaluate`, Unmet wording `unverified(<why>)`, ranked order, durability as capabilities). Otherwise idle; ROADMAP has no row after R4.
