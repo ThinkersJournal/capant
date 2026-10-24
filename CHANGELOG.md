@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.3
+
+- R1 design: `docs/DESIGN.md` (data model, one `Evaluation` result type, matrix format, staleness, `--check`, adapters, migration, test plan). No code.
+
 ## 0.0.2
 
 - R0 survey: `docs/SURVEY.md` (PersistAnt registry, AntSpawn matrix, ConfigurAnt modules, read at origin/main). No code.
