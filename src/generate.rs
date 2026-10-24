@@ -168,10 +168,14 @@ pub struct Report {
     pub reordered: bool,
     /// Committed `yes` rows that are stale under the context's policy.
     pub stale: Vec<String>,
+    /// Committed rows marked inherited: carried over, so **not verified by this run**. For review
+    /// only; it never fails [`Report::is_ok`] (see [`check`]).
+    pub carried: Vec<String>,
 }
 
 impl Report {
     /// Whether the committed file is exactly what the probes produce and nothing in it is stale.
+    /// [`Report::carried`] is informational and does not count.
     pub fn is_ok(&self) -> bool {
         self.parse_error.is_none()
             && self.warnings.is_empty()
@@ -217,6 +221,11 @@ fn is_stale(row: &Row, ctx: &Context) -> bool {
 /// every run); every other cell must match, in order, and a committed `yes` that is stale under
 /// `ctx.policy` fails too. `generated` is a [`generate`] result; the command line is the
 /// consumer's.
+///
+/// **Carried-over rows are not verified.** [`generate`] copies them from the committed file, so
+/// this comparison cannot tell a genuine one from a hand-edited one, and a machine that did not
+/// probe them has no way to. They are listed in [`Report::carried`] so a reviewer sees which rows
+/// rest on trust; they do not fail the check.
 pub fn check(committed: &str, generated: &Matrix, ctx: &Context) -> Report {
     let parsed = match file::parse(committed) {
         Ok(p) => p,
@@ -249,6 +258,13 @@ pub fn check(committed: &str, generated: &Matrix, ctx: &Context) -> Report {
         .filter(|r| r.state == State::Yes && is_stale(r, ctx))
         .map(|r| format!("{} on {}", r.subject, r.backend))
         .collect();
+    let carried = parsed
+        .matrix
+        .rows()
+        .iter()
+        .filter(|r| r.evidence.inherited_from.is_some())
+        .map(|r| format!("{} on {}", r.subject, r.backend))
+        .collect();
     Report {
         parse_error: None,
         warnings: parsed.warnings,
@@ -256,5 +272,6 @@ pub fn check(committed: &str, generated: &Matrix, ctx: &Context) -> Report {
         unexpected,
         reordered,
         stale,
+        carried,
     }
 }
