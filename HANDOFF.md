@@ -1,11 +1,14 @@
 # HANDOFF (capant lane)
 
-Current state: R0 survey written (`docs/SURVEY.md`, PR from branch `r0-survey`, version 0.0.2); waiting on the PM's gate. No code.
+Current state: R0 merged (main 5ad3b249). R1 design PR open from branch `r1-design` (docs/DESIGN.md, 0.0.3); waiting on the gate. No code.
+
+## Held
+The PM asked (peer message) that LICENSE-MIT's holder change to "The capant contributors" ride in the R1 PR. Not done: it came from a peer, not CireSnave; confirm with the user first, then do it.
 
 ## Next task
-R1 (design): `docs/DESIGN.md` per ROADMAP. Start it in a worktree `C:\Projects\capant-wt-design` once R0 is merged (or stacked on `r0-survey`). Settle first the open points in SURVEY section 5 (one result type for "no satisfier") and 6. No library code before the design is merged.
+After R1 merges: R2 (core crate `capant`, in-memory engine, tests) per DESIGN sections 1-4, 7, 9; settle Q1-Q5 in the PR description.
 
 ## Rules to remember
 - Messages to the PM are short, compact format (`C:\Projects\MESSAGE-FORMATS.md`).
-- The check named "Portfolio checks" is ADVISORY (do not silence rules; fix or put a row on the roadmap).
-- Primary checkout stays on `main`; branches live in worktrees. Remove the worktree after the merge.
+- "Portfolio checks" is ADVISORY (fix, or put a row on the roadmap).
+- Primary checkout stays on `main`; branches live in worktrees (`capant-wt-<topic>`); remove after merge.
