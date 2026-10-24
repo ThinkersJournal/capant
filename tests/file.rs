@@ -559,3 +559,70 @@ fn carry_over_keeps_whole_sound_rows_marked_inherited_and_rebuilds_the_rest() {
         State::Unverified(Why::NotSetUp)
     );
 }
+
+#[test]
+fn carried_rows_are_listed_but_a_tampered_one_does_not_fail_check() {
+    let win = Config::new().with("os", "windows");
+    let probed = Fake {
+        reachable: vec!["naive", "account"],
+        broken: vec![],
+        no_control: false,
+    };
+    let mut win_ctx = ctx(500);
+    win_ctx.environment = win;
+    let committed = gen_with(&probed, &Matrix::new(), &win_ctx);
+
+    let linux_only = Fake {
+        reachable: vec!["naive"],
+        broken: vec![],
+        no_control: false,
+    };
+    let c = ctx(900);
+    let regen = gen_with(&linux_only, &committed, &c);
+    let text = write(&regen);
+    let report = check(&text, &regen, &c);
+    assert!(report.is_ok());
+    assert!(
+        report.carried.contains(&"read on account".to_owned()),
+        "{:?}",
+        report.carried
+    );
+    assert!(
+        report.carried.iter().all(|l| l.ends_with("on account")),
+        "only the carried provider is listed (control: naive was probed here)"
+    );
+
+    // Known limit: the carried rows are copied from the committed file, so editing one of them
+    // there cannot be seen from here. It is listed, not failed.
+    let tampered: String = text
+        .lines()
+        .map(|l| {
+            if l.contains("	account	") && l.contains("probe=read") {
+                format!(
+                    "{}
+",
+                    l.replace("probe=read", "probe=forged")
+                )
+            } else {
+                format!(
+                    "{l}
+"
+                )
+            }
+        })
+        .collect();
+    assert_ne!(tampered, text);
+    let regen_from_tampered = gen_with(&linux_only, &ok(&tampered).matrix, &c);
+    let report = check(&tampered, &regen_from_tampered, &c);
+    assert!(report.is_ok(), "{report:?}");
+    assert!(!report.carried.is_empty());
+
+    // Control: the same edit to a row that WAS probed here is caught.
+    let naive_edit = text.replacen(
+        "naive\t1\t\tyes\t\tprobe=read",
+        "naive\t1\t\tyes\t\tprobe=forged",
+        1,
+    );
+    assert_ne!(naive_edit, text, "the edit applied");
+    assert!(!check(&naive_edit, &regen, &c).is_ok());
+}

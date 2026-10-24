@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.7
+
+- `Report::carried`: committed rows marked inherited, listed for review and never failing `check` (a carried row is copied from the committed file, so a hand edit of it cannot be detected off the machine that probed it). Ruling: PM, 2026-10-24.
+
 ## 0.0.6
 
 - R3: matrix file reader and canonical writer (`parse`, `write`), RFC 3339 `time`, `Prober`, `generate` with carry-over, `check` (ignores only `probed_at`). `Row` gains `metadata` and `extra`. An inherited row whose origin is the current environment counts without consent. Fixtures from AntSpawn and PersistAnt.

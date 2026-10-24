@@ -1,9 +1,9 @@
 # HANDOFF (capant lane)
 
-Current state: R0-R2 merged. R3 (matrix file, generate, check, 0.0.6) is PR `r3-matrix`; waiting on the gate.
+Current state: R0-R3 merged, capant 0.0.6 published, AntSpawn migrated (antspawn#24). 0.0.7 (`Report::carried`) is PR `r0-carried`; waiting on the gate, then the PM publishes.
 
 ## Next task
-R4: migrate AntSpawn first (its matrix is the most developed), then PersistAnt, then ConfigurAnt, each a PR in the consumer's repo (crates.io dependency on `capant`, never a path or git; so `capant` must be published first: ask the PM). Read `docs/DESIGN.md` section 7-8. AntSpawn's file already parses and rewrites byte-for-byte (tests/file.rs). Do not start a consumer PR until the PM confirms publishing and the lane for that consumer.
+R4 continues in other lanes: PersistAnt step 1 (parse/write via capant, no behaviour change; TASK relayed by the PM to the persistant lane, 0.9.40 proposed), then ConfigurAnt after a PersistAnt release. This lane's part: answer API questions, and when PersistAnt step 1 merges, draft the step-2 [TASK] (selection via `capant::evaluate`, Unmet wording `unverified(<why>)`, ranked order, durability as capabilities). Otherwise idle; ROADMAP has no row after R4.
 
 ## Rules to remember
 - Messages to the PM are short, compact format (`C:\Projects\MESSAGE-FORMATS.md`).
