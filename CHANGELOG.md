@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.9
+
+- README opens with a ten-line hello-world, compiled and run as a doctest (EXPECTATIONS 6.24). Hub card `easyants-card.toml` added.
+
 ## 0.0.7
 
 - `Report::carried`: committed rows marked inherited, listed for review and never failing `check` (a carried row is copied from the committed file, so a hand edit of it cannot be detected off the machine that probed it). Ruling: PM, 2026-10-24.
