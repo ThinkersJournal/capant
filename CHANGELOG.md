@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.10
+
+- `docs/KISS.md`: UNVERIFIED note on CapAnt as the matching engine over KISS capabilities (docs only). Number is a proposal; #8 holds 0.0.9.
+
 ## 0.0.7
 
 - `Report::carried`: committed rows marked inherited, listed for review and never failing `check` (a carried row is copied from the committed file, so a hand edit of it cannot be detected off the machine that probed it). Ruling: PM, 2026-10-24.
