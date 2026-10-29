@@ -1,7 +1,5 @@
-slug = "capant"
 name = "CapAnt"
-order = 100
-status = "coming"
-status_label = "Early release 0.0.9, fresh-eyes trial pending"
 sentence = "Declare what you need in order of importance, and get back the providers that satisfy it, with evidence."
-home = "https://github.com/ThinkersJournal/capant"
+status = "not-ready"
+status_label = "Early release, fresh-eyes trial passed but unpublished fixes pending"
+docs = "https://github.com/ThinkersJournal/capant"
