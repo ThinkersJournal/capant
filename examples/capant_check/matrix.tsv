@@ -1,0 +1,7 @@
+subject_kind	subject	backend	version	config	enabled	reason	metadata	note	probed_at
+capability	kv.get	mem	1		yes		probe=mem::kv.get		2026-10-29T20:07:00Z
+capability	kv.put	mem	1		yes		probe=mem::kv.put		2026-10-29T20:07:00Z
+capability	kv.durable	mem	1		no	missing	probe=mem::kv.durable		2026-10-29T20:07:00Z
+capability	kv.get	files	1		yes		probe=files::kv.get		2026-10-29T20:07:00Z
+capability	kv.put	files	1		yes		probe=files::kv.put		2026-10-29T20:07:00Z
+capability	kv.durable	files	1		yes		probe=files::kv.durable		2026-10-29T20:07:00Z

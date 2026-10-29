@@ -77,7 +77,7 @@ let why = eval.check("mem").unwrap_err().to_string();
 assert!(why.contains("kv.atomic_replace [unverified (no evidence)]"), "{why}");
 ```
 
-Matrices also live in a plain text file (`parse`, `write`, `generate`, `check`), so a reviewer can read what each backend is claimed to do and CI can fail when the file drifts. See `docs/DESIGN.md`.
+Matrices also live in a plain text file (`parse`, `write`, `generate`, `check`), so a reviewer can read what each backend is claimed to do and CI can fail when the file drifts. See `docs/DESIGN.md`, and `docs/CI-CHECK.md` for a runnable CI check with its GitHub Actions workflow.
 
 Status: early release, API may still change before 0.1. The newest version on crates.io may be older than this README; the example works on it either way. See `ROADMAP.md`.
 
