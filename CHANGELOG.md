@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.0.14
+
+- `docs/PATENT-SWEEP.md`: patent sweep of the 0.0.x line (docs only).
+
+## 0.0.13
+
+- README: second example, a `yes` with no evidence and a stale `yes` are `unverified` (doctest, asserted).
+
+## 0.0.12
+
+- `easyants-card.toml` follows the hub's card format (no `slug`/`order`/`home`; `status = "not-ready"`), which had turned the hub build red.
+
+## 0.0.11
+
+- README: fixes from the first fresh-eyes trial (a passing, near-copy-paste run): where to paste the example, what `Context` and the surface mean, the rejection message shown and asserted, status no longer pins a version.
+
 ## 0.0.10
 
 - `docs/KISS.md`: UNVERIFIED note on CapAnt as the matching engine over KISS capabilities (docs only).
