@@ -118,8 +118,17 @@ fn bad_usage_is_exit_2() {
 
 #[test]
 fn the_doc_embeds_the_workflow_file_verbatim() {
-    let yml = include_str!("../examples/capant_check/capant-check.yml");
-    let doc = include_str!("../docs/CI-CHECK.md");
+    // A Windows checkout may turn both files into CRLF.
+    let yml = include_str!("../examples/capant_check/capant-check.yml").replace(
+        "
+", "
+",
+    );
+    let doc = include_str!("../docs/CI-CHECK.md").replace(
+        "
+", "
+",
+    );
     assert!(doc.contains(&format!(
         "```yaml
 {yml}```"
