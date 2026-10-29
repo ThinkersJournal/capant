@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.16
+
+- `examples/capant_check` and `docs/CI-CHECK.md`: a consumer's `capant check` for CI (a runnable example, a committed matrix, a GitHub Actions workflow). Fails when the file drifts from the probes or a declared capability has no probe. Tested as a process in `tests/ci_check.rs` and by a `capant check` job in `ci.yml`.
+
 ## 0.0.15
 
 - README: third example, required vs preferred needs, `satisfying()` order and the rejection text for an unprobed `yes` (from the published-crate fresh-eyes trial). HANDOFF refreshed.

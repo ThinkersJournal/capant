@@ -7,3 +7,4 @@ R1. Design: docs/DESIGN.md: data model (Capability, Evidence, Provider, Need), o
 R2. Core crate `capant` with an in-memory engine and tests.
 R3. Matrix file reader/writer and `--check`.
 R4. Migrate AntSpawn first (its matrix is the most developed), then PersistAnt, then ConfigurAnt, each as a PR in the consumer's repo, version bumps per portfolio rules.
+R5. A `capant check` CI example for consumers (`examples/capant_check`, `docs/CI-CHECK.md`), run as a process in tests, with a fresh-eyes trial.
