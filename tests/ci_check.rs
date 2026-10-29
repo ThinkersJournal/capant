@@ -119,24 +119,10 @@ fn bad_usage_is_exit_2() {
 #[test]
 fn the_doc_embeds_the_workflow_file_verbatim() {
     // A Windows checkout may turn both files into CRLF.
-    let yml = include_str!("../examples/capant_check/capant-check.yml").replace(
-        "
-", "
-",
-    );
-    let doc = include_str!("../docs/CI-CHECK.md").replace(
-        "
-", "
-",
-    );
-    assert!(doc.contains(&format!(
-        "```yaml
-{yml}```"
-    )));
+    let lf = |s: &str| s.replace("\r\n", "\n");
+    let yml = lf(include_str!("../examples/capant_check/capant-check.yml"));
+    let doc = lf(include_str!("../docs/CI-CHECK.md"));
+    assert!(doc.contains(&format!("```yaml\n{yml}```")));
     // control: the doc does not contain a changed workflow
-    assert!(!doc.contains(&format!(
-        "```yaml
-{}```",
-        yml.replace("stable", "nightly")
-    )));
+    assert!(!doc.contains(&format!("```yaml\n{}```", yml.replace("stable", "nightly"))));
 }
