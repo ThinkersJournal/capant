@@ -2,7 +2,11 @@
 
 ## 0.0.10
 
-- `docs/KISS.md`: UNVERIFIED note on CapAnt as the matching engine over KISS capabilities (docs only). Number is a proposal; #8 holds 0.0.9.
+- `docs/KISS.md`: UNVERIFIED note on CapAnt as the matching engine over KISS capabilities (docs only).
+
+## 0.0.9
+
+- README opens with a ten-line hello-world, compiled and run as a doctest (EXPECTATIONS 6.24). Hub card `easyants-card.toml` added.
 
 ## 0.0.7
 
