@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.15
+
+- README: third example, required vs preferred needs, `satisfying()` order and the rejection text for an unprobed `yes` (from the published-crate fresh-eyes trial). HANDOFF refreshed.
+
 ## 0.0.14
 
 - `docs/PATENT-SWEEP.md`: patent sweep of the 0.0.x line (docs only).

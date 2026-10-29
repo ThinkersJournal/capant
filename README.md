@@ -50,6 +50,33 @@ let fresh = Row::capability(id("kv.get"), "fs", "1", State::Yes).evidence(probe(
 assert_eq!(state(fresh, 2_000), "yes");
 ```
 
+Needs come in two kinds. `Need::new(required)` must all be `yes`; `.prefer(preferred)` only orders the providers that qualify, most important first, and never excludes one. `satisfying()` lists the qualifying providers best first, and `check(name)` explains a rejected one:
+
+```rust
+use capant::*;
+
+let id = |s: &str| CapabilityId::new(s).unwrap();
+let provider = |name: &str| Provider::new(name, vec![Surface::new(name, "1", Config::new())]).unwrap();
+let proven = |cap: &str, backend: &str| {
+    Row::capability(id(cap), backend, "1", State::Yes).evidence(Evidence::probe("probe"))
+};
+
+let matrix = Matrix::from_rows(vec![
+    proven("kv.get", "files"), proven("kv.atomic_replace", "files"),
+    proven("kv.get", "sqlite"), proven("kv.atomic_replace", "sqlite"), proven("kv.fast_scan", "sqlite"),
+    proven("kv.get", "mem"),
+    Row::capability(id("kv.atomic_replace"), "mem", "1", State::Yes), // claimed, never probed
+]);
+let need = Need::new(vec![id("kv.get"), id("kv.atomic_replace")]).prefer(vec![id("kv.fast_scan")]);
+let providers = [provider("files"), provider("sqlite"), provider("mem")];
+let eval = evaluate(&providers, &need, &matrix, &Context::new(0, Config::new())).unwrap();
+
+// `sqlite` is listed after `files` in the table, but it has the preferred capability, so it ranks first.
+assert_eq!(eval.satisfying().map(|e| e.provider.as_str()).collect::<Vec<_>>(), ["sqlite", "files"]);
+let why = eval.check("mem").unwrap_err().to_string();
+assert!(why.contains("kv.atomic_replace [unverified (no evidence)]"), "{why}");
+```
+
 Matrices also live in a plain text file (`parse`, `write`, `generate`, `check`), so a reviewer can read what each backend is claimed to do and CI can fail when the file drifts. See `docs/DESIGN.md`.
 
 Status: early release, API may still change before 0.1. The newest version on crates.io may be older than this README; the example works on it either way. See `ROADMAP.md`.
