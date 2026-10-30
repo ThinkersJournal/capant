@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.0
+
+- **Breaking:** `#[non_exhaustive]` on the result types a consumer reads but never builds (`Entry`, `NeedOutcome`, `Evaluation`, `Resolved`, `Unmet`, `ProviderUnmet`, `Choice`, `Parsed`, `Report`) and on the enums `Role` and `Outcome`, so a field or variant can be added later without another break. Struct literals of these types, and exhaustive `match` on `Role`/`Outcome`, need `..`/a wildcard arm. Input types (`Policy`, `Context`, `Surface`, `Need`) are unchanged and still build with `..Default::default()`/`Context::new`.
+
 ## 0.0.18
 
 - README: a compiled `Prober` / `generate` / `write` / `check` example, including the stale case and how an untested capability is written (`enabled=no`, reason `no probe for this capability yet`). `docs/CI-CHECK.md` says where the example lives. Found by a fresh-eyes trial of a new consumer using only the docs.

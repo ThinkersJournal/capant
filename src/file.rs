@@ -148,6 +148,7 @@ pub enum Warning {
 
 /// A parsed file.
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 pub struct Parsed {
     /// The rows.
     pub matrix: Matrix,
