@@ -11,6 +11,7 @@ use crate::{
 
 /// What one probe found.
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum Outcome {
     /// The capability holds. Without a probe id in the evidence it is recorded as unverified.
     Pass(Evidence),
@@ -155,6 +156,7 @@ pub fn generate(
 
 /// The result of comparing a committed file with a fresh run.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
+#[non_exhaustive]
 pub struct Report {
     /// The committed file was refused by the reader.
     pub parse_error: Option<ParseError>,

@@ -161,6 +161,7 @@ impl Need {
 
 /// What the matrix says about one capability of one provider, after degrading.
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 pub struct Resolved {
     /// The combined state.
     pub state: State,
@@ -288,6 +289,7 @@ pub fn resolve(
 
 /// Whether an outcome is for a required or a preferred capability.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum Role {
     /// Must be `Yes`.
     Required,
@@ -297,6 +299,7 @@ pub enum Role {
 
 /// One capability of one provider, with why.
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 pub struct NeedOutcome {
     /// The capability.
     pub id: CapabilityId,
@@ -329,6 +332,7 @@ impl NeedOutcome {
 
 /// One provider's result.
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 pub struct Entry {
     /// The provider's id.
     pub provider: String,
@@ -354,6 +358,7 @@ impl Entry {
 
 /// What a provider lacks. Never contains a `Yes`.
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 pub struct ProviderUnmet {
     /// The provider's id.
     pub provider: String,
@@ -363,6 +368,7 @@ pub struct ProviderUnmet {
 
 /// No provider satisfies the whole need; lists every provider and what it lacks.
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 pub struct Unmet {
     /// One entry per provider considered, in ranked order.
     pub providers: Vec<ProviderUnmet>,
@@ -432,6 +438,7 @@ impl std::error::Error for DuplicateProvider {}
 
 /// A choice shown to a person: an id and why it fits.
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 pub struct Choice {
     /// The provider's id.
     pub id: String,
@@ -442,6 +449,7 @@ pub struct Choice {
 /// Every provider, ranked, each with its outcomes. There is no closest match: only
 /// [`Evaluation::satisfying`] may be opened from.
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 pub struct Evaluation {
     entries: Vec<Entry>,
 }
