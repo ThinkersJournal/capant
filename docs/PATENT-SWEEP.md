@@ -50,3 +50,7 @@ None as read. The two nearest readings: US20040101125A1 claim 1 (a prioritised l
 - Nine claim sets were read out of many results. The unread list is longer than the read list.
 - Google Patents status and expiry are its own estimates, not legal expiry.
 - AI-assisted reading of machine-converted claim text. Check a quote against the official record before relying on it.
+
+## Addendum: capant 0.1.0 (2026-10-30)
+
+The sweep above was not re-run. Between `ab26b3c` and `e75eaa5` (0.1.0, published as `v0.1.0`) the `src/` diff is 11 added `#[non_exhaustive]` attributes on result types, `Role` and `Outcome`. No engine logic, file format or dependency changed, so none of the verdicts above depend on a changed behaviour. This is a statement about the diff, not a new search; the limitations below apply unchanged.
