@@ -1,6 +1,6 @@
 # Can CapAnt be the matching engine over KISS capabilities?
 
-Status: **UNVERIFIED design note, docs only, no code.** Question (CireSnave 2026-10-28, first-hand, relayed by the PM): *"Kernel needs are by capability. Should CapAnt be involved in the kernel capability interface?"*
+Status: **design note, checked against the KISS spec text on 2026-10-30 (see "Verification"); adapter not written.** Question (CireSnave 2026-10-28, first-hand, relayed by the PM): *"Kernel needs are by capability. Should CapAnt be involved in the kernel capability interface?"*
 Read at `KISS` `origin/main` on 2026-10-28: `spec/announce.md` (§6.4 decline codes, §7.1-§7.3 capability bitset, profiles, role-aware live word) and `spec/classify.md` (§6.8 `target_capability`). Nothing else of KISS was read; every claim about KISS below is a reading of those two files, not a test.
 
 ## Intended hello-world (the shape a Fuel or baracuda developer would copy)
@@ -50,6 +50,15 @@ CapAnt can be the engine; **KISS stays free of it** (KISS cannot depend on a Rus
 
 CapAnt: the engine, unchanged. FireLine: the adapter crate (KISS types in, `Matrix` and `Need` out; `Unmet` in, KISS decline out). Fuel, baracuda, Unpopped: depend on FireLine's adapter and on capant by crates.io version. KISS: the spec, with no Rust dependency; the conformance crate stays std-only.
 
+## Verification (2026-10-30)
+
+Read at `KISS` `origin/main` d2374d0 (`spec/announce.md` §6.4, §7.1-§7.3; `spec/classify.md` §6.8) and `kiss-ref` `origin/main` 924aa17 (`kiss-classify-vocab` only; it holds no announce or capability-word code, so the announce side is checked against the spec text, not a reference implementation).
+
+- **Confirmed against the text:** axis ranges and tiers (§7.2); bits 32/33 and SUB 48-56; unknown set bit ignored, never rejected (§7.2-0007); decline codes 1-6 and the experimental `[0x40000000, 0x80000000)` and vendor `[0x80000000, 2^32)` ranges, unknown code = generic decline (§6.4-0009/0010); `target_capability` byte-exact, no subset or implication (§6.8-0002); the live-word formula and its worked vector (§7.3-0003).
+- **Run, not just read:** `tests/kiss_vector.rs` reproduces the §7.3-0003 vector (live `0x0011_0003_0000_0001`, roles exchanged gives the same), feeds the live word to `evaluate` as `Yes`/`No(Missing)` rows with probe `announce:handshake`, and shows: the live FEAT need is satisfied; the plain AND `0x0011_0000_0000_0001` fails the same need (negative control); flipping the consumer's FEAT bit 33 changes nothing, while the provider clearing it does; an unknown set bit changes nothing. The adapter there is test code (`live_word`, `matrix_from`), which is the only KISS knowledge; CapAnt is unchanged.
+- **Correction, Q-K3:** §6.8-0005 allows any ASCII except `|`, `;`, `/`, whitespace and control bytes, so a token may hold upper case and punctuation that `CapabilityId` (lower-case, digits, `_ . : -`) rejects. The spec's own examples are all lower-case; no clause or registry entry read says whether any namespace uses more. Still an adapter-side escape question, now with a wider alphabet than "upper case".
+- **Not checked:** the namespace registry file (§6.8-0003) and individual namespace vocabularies (`spec/namespaces/`); Q-K1 and Q-K2 are design opinions, not facts the spec settles.
+
 ## Not done
 
-No adapter was written or run. The sketch was not compiled. No KISS-Conform vector was fed through CapAnt; the first honest test is the §7.3-0003 worked vector (consumer `0x0031_0000_0000_0001`, provider `0x0091_0003_0000_0003`, live `0x0011_0003_0000_0001`) reproduced by the adapter plus `evaluate`, with a negative control that flips one FEAT bit on the consumer side and shows the live answer does not change.
+No FireLine adapter was written. The hello-world sketch above was not compiled. The §7.3-0003 vector was run through `evaluate` by a test-local adapter (`tests/kiss_vector.rs`), but no KISS-Conform corpus file (`announce_vectors.json`) was read or fed through CapAnt.
