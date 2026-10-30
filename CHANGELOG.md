@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.18
+
+- README: a compiled `Prober` / `generate` / `write` / `check` example, including the stale case and how an untested capability is written (`enabled=no`, reason `no probe for this capability yet`). `docs/CI-CHECK.md` says where the example lives. Found by a fresh-eyes trial of a new consumer using only the docs.
+
 ## 0.0.17
 
 - `SECURITY.md`: supported-versions policy (latest line gets fixes; an older line only when the backport is small; no period promised).
