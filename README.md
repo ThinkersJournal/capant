@@ -77,7 +77,46 @@ let why = eval.check("mem").unwrap_err().to_string();
 assert!(why.contains("kv.atomic_replace [unverified (no evidence)]"), "{why}");
 ```
 
-Matrices also live in a plain text file (`parse`, `write`, `generate`, `check`), so a reviewer can read what each backend is claimed to do and CI can fail when the file drifts. See `docs/DESIGN.md`, and `docs/CI-CHECK.md` for a runnable CI check with its GitHub Actions workflow.
+Matrices also live in a plain text file, so a reviewer can read what each backend is claimed to do and CI can fail when the file drifts. You supply a `Prober` that runs one real check per provider and capability; `generate` runs it, `write` makes the file, and `check` compares a committed file with a fresh run:
+
+```rust
+use capant::*;
+
+struct Probes;
+impl Prober for Probes {
+    fn can_probe(&self, _p: &Provider) -> bool { true }
+    fn probe(&self, p: &Provider, cap: &CapabilityId, _ctx: &Context) -> Outcome {
+        let proof = Evidence::probe(format!("{}::{}", p.id(), cap.as_str()));
+        match cap.as_str() {
+            "kv.get" => Outcome::Pass(proof),
+            "kv.ttl" => Outcome::Fail { reason: Reason::Missing, evidence: proof },
+            // Nothing to try yet: written as `enabled=no`, reason `no probe for this capability yet`.
+            _ => Outcome::Unverified { why: Why::Untested, evidence: Evidence::default() },
+        }
+    }
+}
+
+let id = |s: &str| CapabilityId::new(s).unwrap();
+let providers = [Provider::new("mem", vec![Surface::new("mem", "1", Config::new())]).unwrap()];
+let caps = [id("kv.get"), id("kv.ttl"), id("kv.watch")];
+let policy = Policy { max_age_secs: Some(3600), ..Policy::default() };
+let at = |now| Context { policy: policy.clone(), ..Context::new(now, Config::new()) };
+
+// Commit this text (`std::fs::write("capabilities/matrix.tsv", &committed)`).
+let committed = write(&generate(&providers, &caps, &Probes, &Matrix::new(), &at(1_000)));
+
+// CI: probe again and compare. Same moment: ok.
+let fresh = generate(&providers, &caps, &Probes, &Matrix::new(), &at(1_000));
+assert!(check(&committed, &fresh, &at(1_000)).is_ok());
+
+// Rows older than `max_age_secs` are listed in `stale` and fail the check, so re-probe and re-commit.
+let later = at(1_000 + 7_200);
+let fresh = generate(&providers, &caps, &Probes, &Matrix::new(), &later);
+let report = check(&committed, &fresh, &later);
+assert!(!report.is_ok() && !report.stale.is_empty());
+```
+
+`docs/CI-CHECK.md` turns this into a runnable CI check with its GitHub Actions workflow; `docs/DESIGN.md` has the file format and the reasoning.
 
 Status: early release, API may still change before 0.1. The newest version on crates.io may be older than this README; the example works on it either way. See `ROADMAP.md`.
 

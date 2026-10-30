@@ -1,6 +1,6 @@
 # `capant check` in CI
 
-A consumer commits a matrix file, one row per provider and capability, saying what each backend was **shown** to do. CI re-runs the probes and fails when the file no longer says what the probes find, or when a capability the project declares has no probe. This is the `--check` of `docs/DESIGN.md` section 5; the command line is the consumer's, and `examples/capant_check/main.rs` is a complete one.
+A consumer commits a matrix file, one row per provider and capability, saying what each backend was **shown** to do. CI re-runs the probes and fails when the file no longer says what the probes find, or when a capability the project declares has no probe. This is the `--check` of `docs/DESIGN.md` section 5; the command line is the consumer's, and `examples/capant_check/main.rs` is a complete one (it ships in the published crate, and is at `https://github.com/ThinkersJournal/capant/blob/main/examples/capant_check/main.rs`; the README shows the same calls in miniature).
 
 ## Layout
 
