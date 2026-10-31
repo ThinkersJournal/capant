@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2
+
+- docs: `docs/ADOPTION.md` (ROADMAP R6): what PersistAnt, AntSpawn and ConfigurAnt still hold of their own capability code, what CapAnt could replace, order, options and what is blocked. Read at PersistAnt `c4ed00e`, AntSpawn `ecb6f76`, ConfigurAnt `4220fa1`.
+
 ## 0.1.1
 
 - docs: PATENT-SWEEP addendum for 0.1.0 (src diff since the sweep is `#[non_exhaustive]` only).
