@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3
+
+- docs: `docs/ADOPTION-CONFIGURANT.md`: what ConfigurAnt holds of capability and host-fit code and what CapAnt would replace (nothing in its own code); option B, take the `persistant` 0.11.7 -> 0.12.3 bump. Read at ConfigurAnt `59a88db`, PersistAnt `c4ed00e`.
+
 ## 0.1.2
 
 - docs: `docs/ADOPTION.md` (ROADMAP R6): what PersistAnt, AntSpawn and ConfigurAnt still hold of their own capability code, what CapAnt could replace, order, options and what is blocked. Read at PersistAnt `c4ed00e`, AntSpawn `ecb6f76`, ConfigurAnt `4220fa1`.
