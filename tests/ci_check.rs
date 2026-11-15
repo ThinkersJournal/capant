@@ -5,27 +5,45 @@
 
 use std::path::PathBuf;
 use std::process::{Command, Output};
+use std::sync::OnceLock;
 
 const COMMITTED: &str = include_str!("../examples/capant_check/matrix.tsv");
 
 fn example() -> PathBuf {
-    // tests run from target/<profile>/deps; `cargo test` builds the examples into ../examples.
-    let mut p = std::env::current_exe().unwrap();
-    p.pop();
-    p.pop();
-    p.push("examples");
-    p.push(format!("capant_check{}", std::env::consts::EXE_SUFFIX));
-    assert!(p.exists(), "example not built: {}", p.display());
-    // `cargo test --test ci_check` alone does not rebuild examples: refuse a stale binary.
-    let built = std::fs::metadata(&p).and_then(|m| m.modified()).unwrap();
-    let edited = std::fs::metadata("examples/capant_check/main.rs")
-        .and_then(|m| m.modified())
-        .unwrap();
-    assert!(
-        built >= edited,
-        "example is older than its source: run `cargo test`"
-    );
-    p
+    // Ask cargo where the example went: the build directory layout is cargo's to change (1.100
+    // moved it), and building here also means the binary is never older than its source.
+    static EXE: OnceLock<PathBuf> = OnceLock::new();
+    EXE.get_or_init(|| {
+        let cargo = std::env::var_os("CARGO").unwrap_or_else(|| "cargo".into());
+        let out = Command::new(cargo)
+            .args([
+                "build",
+                "--example",
+                "capant_check",
+                "--message-format=json",
+            ])
+            .output()
+            .expect("run cargo build --example");
+        assert!(
+            out.status.success(),
+            "{}",
+            String::from_utf8_lossy(&out.stderr)
+        );
+        let text = String::from_utf8_lossy(&out.stdout).into_owned();
+        let exe = text
+            .lines()
+            .filter(|l| l.contains("capant_check") && l.contains("\"executable\":\""))
+            .filter_map(|l| {
+                let rest = l.split("\"executable\":\"").nth(1)?;
+                Some(rest.split('"').next()?.replace("\\\\", "\\"))
+            })
+            .next_back()
+            .unwrap_or_else(|| panic!("no executable in cargo output: {text}"));
+        let p = PathBuf::from(exe);
+        assert!(p.exists(), "example not built: {}", p.display());
+        p
+    })
+    .clone()
 }
 
 /// Run the check on `file` text; `extra` capabilities are declared for the run.

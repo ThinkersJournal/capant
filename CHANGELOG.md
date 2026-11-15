@@ -3,6 +3,7 @@
 ## 0.1.4
 
 - docs: `docs/ADOPTION-CONFIGURANT.md` marked decided (option A, B already done: ConfigurAnt pins `persistant` 0.17.1, `capant` 0.1.0 transitively, no direct dependency); section 3 pin updated. Read at ConfigurAnt `d016a3d`.
+- test: `tests/ci_check.rs` asks `cargo build --example --message-format=json` for the example's path. Cargo 1.100 changed the build-directory layout, so the hard-coded `target/<profile>/examples` path failed on every CI test job (6 of 7 tests, `example not built`), on `main` too.
 
 ## 0.1.3
 
