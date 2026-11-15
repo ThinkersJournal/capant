@@ -1,5 +1,7 @@
 # CapAnt in ConfigurAnt: adoption review
 
+**Decided 2026-11-14 (configurant lane, `[FINDING]` over Synapse, read at ConfigurAnt `d016a3d`): option A, with B already done.** ConfigurAnt takes no direct `capant` dependency and no capant PR is coming; section 2 holds (nothing in its own code ranks by capability). C, D and E stay declined until a consumer asks; if one does, C first. The text below is the 2026-10-31 review as written; section 3 is superseded by the update at its head.
+
 Docs only. A follow-up to `docs/ADOPTION.md` (R6), which left ConfigurAnt as "its owner's call". This note reads ConfigurAnt's own capability and fit code and says what CapAnt would replace there. Nothing here edits ConfigurAnt; every step below would be that repo's own PR, decided by its lane.
 
 **Refs read** (`git show origin/main:<path>` after `git fetch`, 2026-10-31): ConfigurAnt `59a88db` (0.5.39), PersistAnt `c4ed00e`, CapAnt `9301776` (0.1.2; crates.io latest is 0.1.0). Read: `src/module.rs`, `src/persistant.rs`, `src/exec.rs`, `src/exec/run.rs`, `src/modules/ports.rs`, `docs/DESIGN.md` item 12, `docs/MODULES.md`, `ROADMAP.md`, `Cargo.toml`, `Cargo.lock`. Not read: `edit.rs`, the TUI and GUI crates' transfer screens, `configurant-scan` internals. The configurant lane confirmed (peers, 2026-10-31) that `src/persistant.rs` is the only place that picks among options by capability, and that it knows of no other.
@@ -26,6 +28,8 @@ Only one row is a choice among providers by capability, and ConfigurAnt owns nei
 - `Needs` is opaque on purpose (`module.rs`: "a module defines the meaning of the strings"); ROADMAP row 5 ruled flags only, no `Needs` schema field.
 
 ## 3. One finding that is not CapAnt adoption
+
+**Update (2026-11-14, ConfigurAnt `d016a3d`): done.** `Cargo.toml` pins `persistant = "0.17.1"` (PR #89 took 0.14.3, later bumps the rest) and `Cargo.lock` has `persistant` 0.17.1 and `capant` 0.1.0 transitively. The pin below (0.11.7, latest 0.12.3) is the stale 2026-10-31 reading, kept for the record.
 
 ConfigurAnt pins `persistant = "0.11.7"` (`Cargo.toml:34`; `Cargo.lock` shows `persistant`, `persistant-core` 0.11.7 and `capant` 0.0.7). crates.io's latest `persistant` is 0.12.3 (read back 2026-10-31). Two things follow:
 
