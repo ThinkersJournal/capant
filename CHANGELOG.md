@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.4
+
+- docs: `docs/ADOPTION-CONFIGURANT.md` marked decided (option A, B already done: ConfigurAnt pins `persistant` 0.17.1, `capant` 0.1.0 transitively, no direct dependency); section 3 pin updated. Read at ConfigurAnt `d016a3d`.
+
 ## 0.1.3
 
 - docs: `docs/ADOPTION-CONFIGURANT.md`: what ConfigurAnt holds of capability and host-fit code and what CapAnt would replace (nothing in its own code); option B, take the `persistant` 0.11.7 -> 0.12.3 bump. Read at ConfigurAnt `59a88db`, PersistAnt `c4ed00e`.
