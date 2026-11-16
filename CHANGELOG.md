@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.6
+
+- test: `Matrix::merge` now has a test (appends in order, keeps conflicting rows, empty merge is a no-op); closes the MOD-011 Info finding. No API change.
+
 ## 0.1.5
 
 - ci: the Portfolio job moves to the coderipper 0.47.5 workflow `c72a6e0` (was `30e012b`). No `.coderipper.toml` and no old rule names in this repo, so nothing to migrate.
