@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.7
+
+- docs: README status line no longer says the API may change "before 0.1" (the crate is 0.1.x); now "before 1.0".
+
 ## 0.1.6
 
 - test: `Matrix::merge` now has a test (appends in order, keeps conflicting rows, empty merge is a no-op); closes the MOD-011 Info finding. No API change.

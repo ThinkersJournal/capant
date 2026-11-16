@@ -118,6 +118,6 @@ assert!(!report.is_ok() && !report.stale.is_empty());
 
 `docs/CI-CHECK.md` turns this into a runnable CI check with its GitHub Actions workflow; `docs/DESIGN.md` has the file format and the reasoning.
 
-Status: early release, API may still change before 0.1. The newest version on crates.io may be older than this README; the example works on it either way. See `ROADMAP.md`.
+Status: early release (0.1.x); the API may still change before 1.0. The newest version on crates.io may be older than this README; the example works on it either way. See `ROADMAP.md`.
 
 Part of the ant family of shared building blocks (names and rulings: PORTFOLIO-ROADMAP.md in the PM's tree). Licensed under MIT OR Apache-2.0.
