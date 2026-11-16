@@ -526,3 +526,21 @@ fn consumers_reorder_satisfiers_with_their_own_tie_break() {
         "satisfiers reordered, the rejected one stays last"
     );
 }
+
+#[test]
+fn matrix_merge_appends_in_order_and_keeps_conflicts() {
+    let mut a = Matrix::from_rows(vec![yes("c.a", "x", Evidence::default())]);
+    let b = Matrix::from_rows(vec![
+        no("c.a", "x", Reason::Missing),
+        yes("c.b", "y", Evidence::default()),
+    ]);
+    a.merge(b.clone());
+    // Rows of `other` follow the receiver's, in order, and nothing is deduplicated.
+    assert_eq!(a.rows().len(), 3);
+    assert_eq!(a.rows()[0].subject, id("c.a"));
+    assert_eq!(a.rows()[1..], *b.rows());
+    // Negative control: merging an empty matrix changes nothing.
+    let before = a.clone();
+    a.merge(Matrix::new());
+    assert_eq!(a, before);
+}
