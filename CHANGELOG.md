@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.5
+
+- ci: the Portfolio job moves to the coderipper 0.47.5 workflow `c72a6e0` (was `30e012b`). No `.coderipper.toml` and no old rule names in this repo, so nothing to migrate.
+
 ## 0.1.4
 
 - docs: `docs/ADOPTION-CONFIGURANT.md` marked decided (option A, B already done: ConfigurAnt pins `persistant` 0.17.1, `capant` 0.1.0 transitively, no direct dependency); section 3 pin updated. Read at ConfigurAnt `d016a3d`.
