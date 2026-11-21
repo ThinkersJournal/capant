@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.8
+
+- docs: `docs/AGENT-STACK-GAPS.md`, gap list of AGENT-STACK.md against the capability graph (pm-ants [TASK] 2026-11-21).
+
 ## 0.1.7
 
 - docs: README status line no longer says the API may change "before 0.1" (the crate is 0.1.x); now "before 1.0".
