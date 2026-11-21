@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.9
+
+- docs: AGENT-STACK-GAPS.md records agent-loop's answers (rig is its dependency; goose-agent, rmcp, codex-rs are not; no budget-governor owner yet).
+
 ## 0.1.8
 
 - docs: `docs/AGENT-STACK-GAPS.md`, gap list of AGENT-STACK.md against the capability graph (pm-ants [TASK] 2026-11-21).

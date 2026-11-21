@@ -49,4 +49,6 @@ Source: `ThinkersJournal/agent-loop` main via `gh api`; notes are DRAFT, nothing
 - `agent-lifecycle` needs `harness-adapter` in the graph (`needs`), so it cannot be fully `built` until G exists.
 
 ## Open
-- agent-loop design-round date: pm-ants 2026-11-21 says no round is scheduled; the notes above are on its main. Capant-specific questions for agent-loop: (1) are outside adoption candidates graph entries; (2) which provider will carry `budget-governor`.
+- agent-loop design-round date: pm-ants 2026-11-21 says no round is scheduled.
+- Answered by agent-loop 2026-11-21 (its message, read from its own docs on main): rig (rig-agent/rig-core 0.46.0) is its adopted engine and a Cargo.toml dependency; goose-agent alpha.13 and rmcp 3.8.0 are assessed only (docs/GOOSE-ASSESSMENT.md, docs/LOOP-CORE.md), neither a direct dependency; codex-rs is read only for E and G, not a dependency. So only rig is a candidate graph entry (provider for agent-loop, C); the others are not providers. Not re-verified here.
+- budget-governor: nothing of ours enforces one. rig-agent has max_turns and cumulative usage(); no spend cap or policy. agent-loop's view: the cap belongs at the Driver layer as a policy over that usage; the owner is a PM ruling (pm-ants takes it to the PM).
