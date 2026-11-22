@@ -64,7 +64,7 @@ Each row above against agent-loop's answers (F and Open). Not checked against co
   4. Model-side cache layer: boundary with Fuel's scheduler unsettled, so not yet specifiable.
 
 ## Review of agent-loop's budget-governor note (2026-11-22)
-Reviewed `docs/BUDGET-GOVERNOR.md` at agent-loop branch `budget-governor`, commit 4946e7f (note only, no PR yet). Its source citations were spot-checked at agent-loop `1a8c892`: `max_turns` (`src/run.rs:34`), `Event::Usage` (`src/events.rs:24`), and the two `Usage` emits in `src/driver.rs` (compaction and the main call) all say what the note says. Not run; nothing in it is built.
+Reviewed `docs/BUDGET-GOVERNOR.md` at agent-loop branch `budget-governor`, commit 4946e7f (note only, no PR yet). Its source citations were spot-checked at agent-loop `1a8c892`: `max_turns` (`src/run.rs:35`), `Event::Usage` (`src/events.rs:24`), and the two `Usage` emits in `src/driver.rs` (compaction and the main call) all say what the note says. Not run; nothing in it is built.
 
 What it enforces, and where: an in-run cap (layer C) as a `BudgetPolicy` evaluated at turn boundaries, stopping through the existing soft stop; the fleet cap (layer H) is left to AgentLife, fed by the G `cost` report. That split is sound and creates no standing work.
 
