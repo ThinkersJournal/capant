@@ -60,7 +60,7 @@ Each row above against agent-loop's answers (F and Open). Not checked against co
 - Hierarchical-file edit tool now has an owner: EditAnt (confirmed by editant 2026-11-22 via pm-ants; MVP Markdown heading-sections only, other formats a non-goal for now; SPEC 2 not read by capant). Four rows are unowned, ranked below owned rows (PM ruling 2026-11-21, relayed by pm-ants; demand orders work, never whether). When a lane has free capacity the highest is picked first. pm-ants has put them to the PM. Ranking below is capant's proposal, not a ruling:
   1. D2 links for vault and file tools: smallest and concrete (`tool-providers` lists synapse only; add secretant and file-tool links as providers). Scoped in `SCOPING-D2-VAULT-FILE-TOOLS.md` (capant took it 2026-11-22, pm-ants [TASK]).
   2. Events in Synapse: board 359 design round; rooms give fan-out, the gap is non-lane publishers, typed events and offline delivery. Scoped in `SCOPING-SYNAPSE-EVENTS.md` (capant took it 2026-11-22, pm-ants [TASK]).
-  3. `presents` field beyond claude-code: graph schema question, cheap but touches PM-owned graph.
+  3. `presents` field beyond claude-code: graph schema question, cheap but touches PM-owned graph. Scoped in `SCOPING-PRESENTS-FIELD.md` (no schema change needed: the tool already validates and draws it; data and a definition are missing).
   4. Model-side cache layer: boundary with Fuel's scheduler unsettled, so not yet specifiable.
 
 ## Review of agent-loop's budget-governor note (2026-11-22)
