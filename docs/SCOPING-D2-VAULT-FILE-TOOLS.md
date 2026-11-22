@@ -7,7 +7,7 @@ D2 is the tool-provider half of layer D: MCP servers an agent calls. AGENT-STACK
 
 ## Two different things behind it
 1. **Vault tool provider.** An MCP face over SecretAnt (the vault). The graph row for `secretant` said `secrets: none` (2026-11-01, placeholder); re-read 2026-11-22 at origin/main 01586b8 (0.2.2) it is corrected to `built` (read, not run): store, read API, delivery and CLI exist in code, and there is no MCP surface in `src`. Whether an MCP face should exist at all is a security question first: SecretAnt states a same-user limit, and an agent-reachable tool that returns secret values widens it. An approval or no-values (names and delivery only) design must precede any code.
-2. **File tool provider.** AGENT-STACK's hierarchical-file edit tool (read or write sections of markdown/TOML/JSON by heading or key path). Proposed owner: editant, UNCONFIRMED (pm-ants is asking). It has no repo or graph row read by me.
+2. **File tool provider.** AGENT-STACK's hierarchical-file edit tool (read or write sections of markdown/TOML/JSON by heading or key path). Owner: EditAnt (confirmed 2026-11-22, relayed by pm-ants), MVP Markdown heading-sections only; JSON/TOML are a non-goal for now, so the remaining gap is those formats. It has no repo or graph row read by me.
 
 ## Who would consume it
 - `tool-host` (D1) in any harness, including the planned agent-loop (its `TOOLS.md` is the consumer-side note; not re-read for this scoping).
@@ -18,7 +18,7 @@ D2 is the tool-provider half of layer D: MCP servers an agent calls. AGENT-STACK
 1. Split the graph capability: `tool-providers` stays for messaging; add `tool-provider-vault` and `tool-provider-files`, each `needs: [permission-policy]`, each initially with no `provides` row (a PM edit to `CAPABILITY-GRAPH.json`; capant proposes, does not make it).
 2. (Done 2026-11-22) the `secretant` graph row is refreshed.
 3. One-page threat note for the vault tool: which operations an agent may ask for (list names, deliver to file) versus never (return a value), decided before an owner starts.
-4. File tool: wait for editant's answer; if confirmed, link the `provides` row with `planned`.
+4. File tool: editant confirmed; link its `provides` row with `planned` (Markdown only), the PM edits the graph.
 
 ## Not in scope
 Building either server; choosing MCP library (rmcp is assessed, not adopted, per agent-loop); ranking against other rows.

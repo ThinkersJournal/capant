@@ -29,7 +29,7 @@ route-models (overmind partial), tool-providers (synapse partial), agent-lifecyc
 | AGENT-STACK item | Why it is a gap |
 |---|---|
 | Events in Synapse (non-lane publishers, topic subscriptions) | Candidate with a CireSnave 2026-11-01 source; no capability id. Synapse is point-to-point only today (per AGENT-STACK). Board 359 design call. |
-| Hierarchical-file edit tool (MCP) | "A project for later", no owner, no capability id. |
+| Hierarchical-file edit tool (MCP) | Owner: EditAnt (editant confirmed 2026-11-22, relayed by pm-ants). Its MVP is Markdown heading-sections only (editant SPEC 2); JSON/TOML/code are a non-goal for now. So the gap is "other formats", not "the tool". No capability id yet. |
 | Model-side cache (KV, prefix) as its own layer | Folded into `run-model`; AGENT-STACK says the boundary with Fuel's scheduler is blurry. |
 | Split of A (model files / library / runner / server) | Graph already splits kernels, ml-library, model-files, run-model, serve-openai-api; matches the "A is at least three layers" revision. |
 | Split of H (lifecycle, messaging/identity, dispatch, governor, gates, observability) | Graph has these as separate ids; only `budget-governor` and `observability` lack a real provider. |
@@ -57,7 +57,7 @@ Source: `ThinkersJournal/agent-loop` main via `gh api`; notes are DRAFT, nothing
 ## Owner check (2026-11-22)
 Each row above against agent-loop's answers (F and Open). Not checked against code.
 - Owner now known: budget-governor (agent-loop, per the ruling); harness-adapter (agent-loop, row A); rig as agent-loop's engine (agent-loop, C); eval-harness (agent-loop, named with the harness adapter in the PM ruling, relayed by pm-ants 2026-11-22; CireSnave's 2026-11-01 "not ready to start" still stands, so owner is not a start date).
-- Still no owner named anywhere I have read: hierarchical-file edit tool (proposed: editant, UNCONFIRMED; pm-ants is asking editant). Four more rows are unowned, ranked below owned rows (PM ruling 2026-11-21, relayed by pm-ants; demand orders work, never whether). When a lane has free capacity the highest is picked first. pm-ants has put them to the PM. Ranking below is capant's proposal, not a ruling:
+- Hierarchical-file edit tool now has an owner: EditAnt (confirmed by editant 2026-11-22 via pm-ants; MVP Markdown heading-sections only, other formats a non-goal for now; SPEC 2 not read by capant). Four rows are unowned, ranked below owned rows (PM ruling 2026-11-21, relayed by pm-ants; demand orders work, never whether). When a lane has free capacity the highest is picked first. pm-ants has put them to the PM. Ranking below is capant's proposal, not a ruling:
   1. D2 links for vault and file tools: smallest and concrete (`tool-providers` lists synapse only; add secretant and file-tool links as providers). Scoped in `SCOPING-D2-VAULT-FILE-TOOLS.md` (capant took it 2026-11-22, pm-ants [TASK]).
   2. Events in Synapse: board 359 design round, Synapse is point-to-point only today.
   3. `presents` field beyond claude-code: graph schema question, cheap but touches PM-owned graph.
