@@ -78,3 +78,6 @@ Points for agent-loop and the PM:
 7. **Harness-adapter row:** consistent; its Synapse-transport blocker should cite point 5.
 
 Verdict: the note can go to the PM gate as a draft after points 1 and 4 are answered; 2, 3 and 5 are edits, not blockers. This is a review, not a ruling.
+
+### Closure of points 1 and 4 (2026-11-22)
+Read at agent-loop `origin/main` 9b82f7a (#51 merged), `docs/BUDGET-GOVERNOR.md`: point 1 is answered (lines 52-54: the fleet cap is opt-in and reads `THROTTLE.md`, "nothing here defaults to stopping a lane") and point 4 is answered (line 45: usage is not carried across a resume today; the host keeps the running total or saved state gains it, left as a decision). Both blockers in the verdict are cleared. Points 2, 3 and 5 were not re-read, so they stay open as edits. The note's status table still marks the in-run cap "designed, not built" and the fleet cap "not designed past section 3"; this list keeps `budget-governor` as owned by agent-loop, no provider.
