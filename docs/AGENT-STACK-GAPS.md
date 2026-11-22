@@ -62,3 +62,19 @@ Each row above against agent-loop's answers (F and Open). Not checked against co
   2. Events in Synapse: board 359 design round; rooms give fan-out, the gap is non-lane publishers, typed events and offline delivery. Scoped in `SCOPING-SYNAPSE-EVENTS.md` (capant took it 2026-11-22, pm-ants [TASK]).
   3. `presents` field beyond claude-code: graph schema question, cheap but touches PM-owned graph.
   4. Model-side cache layer: boundary with Fuel's scheduler unsettled, so not yet specifiable.
+
+## Review of agent-loop's budget-governor note (2026-11-22)
+Reviewed `docs/BUDGET-GOVERNOR.md` at agent-loop branch `budget-governor`, commit 4946e7f (note only, no PR yet). Its source citations were spot-checked at agent-loop `1a8c892`: `max_turns` (`src/run.rs:34`), `Event::Usage` (`src/events.rs:24`), and the two `Usage` emits in `src/driver.rs` (compaction and the main call) all say what the note says. Not run; nothing in it is built.
+
+What it enforces, and where: an in-run cap (layer C) as a `BudgetPolicy` evaluated at turn boundaries, stopping through the existing soft stop; the fleet cap (layer H) is left to AgentLife, fed by the G `cost` report. That split is sound and creates no standing work.
+
+Points for agent-loop and the PM:
+1. **Fleet policy input is THROTTLE.md, not a limit the governor invents.** Portfolio CLAUDE.md says cost is "a routing constraint, not a stop-work order" and that throttling is read only from `THROTTLE.md`. A governor that stops runs on its own number would act as a stop-work order. The note cites the cost rule as the reason a fleet cap is wanted; it should say the cap is opt-in and its source is the PM-set status, with the in-run cap a per-run safety, not a fleet policy.
+2. **Token fields are `Option<u64>`** (`src/events.rs`), so an unreported counter is `None`. The note's "unknown is not zero" rule for cost should say the same for tokens: a `None` must not add 0 to the total. A cache-read or cache-write count is not in `Usage` (grep of `src/events.rs` for "cache": no hit), so a token cap over-counts cached input; say whether that is accepted.
+3. **Overshoot is bounded only by a turn plus a batch.** The policy runs after each response and a soft stop finishes the batch, so one parallel tool batch can run past the cap. State the bound, or note that it is accepted.
+4. **Budget scope across a resume.** The note makes stop-save-resume the path, but does not say whether cumulative usage carries over a resume. If it does, a resumed run stops again at once; if it does not, the cap is per-segment. Pick one (run, session or day) before decision 1.
+5. **Synapse "has no subscribe or topic" is stale.** Rooms are built at synapse 3f5726e (see `SCOPING-SYNAPSE-EVENTS.md`). The fleet-cap blocker is narrower: no non-lane publisher and no typed event, so a G `cost` report has no tool identity to post as. Decision 3 (Claude Code cost source, unowned) is untouched by this.
+6. **Eval-harness row:** consistent with this list: not started, CireSnave 2026-11-01 "not ready", owner agent-loop is not a start date.
+7. **Harness-adapter row:** consistent; its Synapse-transport blocker should cite point 5.
+
+Verdict: the note can go to the PM gate as a draft after points 1 and 4 are answered; 2, 3 and 5 are edits, not blockers. This is a review, not a ruling.

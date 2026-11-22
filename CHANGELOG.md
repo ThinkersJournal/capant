@@ -2,7 +2,7 @@
 
 ## 0.1.10
 
-- docs: `docs/SCOPING-SYNAPSE-EVENTS.md`, scoping note for events in Synapse (pm-ants [TASK] 2026-11-22); AGENT-STACK-GAPS.md corrected: Synapse has rooms, so it is not point-to-point only.
+- docs: `docs/SCOPING-SYNAPSE-EVENTS.md`, scoping note for events in Synapse (pm-ants [TASK] 2026-11-22); AGENT-STACK-GAPS.md corrected: Synapse has rooms, so it is not point-to-point only. AGENT-STACK-GAPS.md also records capant's review of agent-loop's budget-governor note.
 
 ## 0.1.9
 
