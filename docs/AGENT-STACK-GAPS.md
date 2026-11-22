@@ -58,7 +58,7 @@ Source: `ThinkersJournal/agent-loop` main via `gh api`; notes are DRAFT, nothing
 Each row above against agent-loop's answers (F and Open). Not checked against code.
 - Owner now known: budget-governor (agent-loop, per the ruling); harness-adapter (agent-loop, row A); rig as agent-loop's engine (agent-loop, C); eval-harness (agent-loop, named with the harness adapter in the PM ruling, relayed by pm-ants 2026-11-22; CireSnave's 2026-11-01 "not ready to start" still stands, so owner is not a start date).
 - Still no owner named anywhere I have read: hierarchical-file edit tool (proposed: editant, UNCONFIRMED; pm-ants is asking editant). Four more rows are unowned, ranked below owned rows (PM ruling 2026-11-21, relayed by pm-ants; demand orders work, never whether). When a lane has free capacity the highest is picked first. pm-ants has put them to the PM. Ranking below is capant's proposal, not a ruling:
-  1. D2 links for vault and file tools: smallest and concrete (`tool-providers` lists synapse only; add secretant and file-tool links as providers).
+  1. D2 links for vault and file tools: smallest and concrete (`tool-providers` lists synapse only; add secretant and file-tool links as providers). Scoped in `SCOPING-D2-VAULT-FILE-TOOLS.md` (capant took it 2026-11-22, pm-ants [TASK]).
   2. Events in Synapse: board 359 design round, Synapse is point-to-point only today.
   3. `presents` field beyond claude-code: graph schema question, cheap but touches PM-owned graph.
   4. Model-side cache layer: boundary with Fuel's scheduler unsettled, so not yet specifiable.
