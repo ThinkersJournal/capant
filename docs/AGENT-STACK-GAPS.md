@@ -56,5 +56,5 @@ Source: `ThinkersJournal/agent-loop` main via `gh api`; notes are DRAFT, nothing
 
 ## Owner check (2026-11-22)
 Each row above against agent-loop's answers (F and Open). Not checked against code.
-- Owner now known: budget-governor (agent-loop, per the ruling); harness-adapter (agent-loop, row A); rig as agent-loop's engine (agent-loop, C).
-- Still no owner named anywhere I have read: eval-harness (CireSnave: not started); hierarchical-file edit tool (AGENT-STACK: no owner); Events in Synapse (board 359 design round, no lane); model-side cache layer (boundary with Fuel's scheduler unsettled); `presents` field beyond claude-code; D2 links for vault and file tools. I add no owner for these: assigning one is a PM/pm-ants call. Question to pm-ants.
+- Owner now known: budget-governor (agent-loop, per the ruling); harness-adapter (agent-loop, row A); rig as agent-loop's engine (agent-loop, C); eval-harness (agent-loop, named with the harness adapter in the PM ruling, relayed by pm-ants 2026-11-22; CireSnave's 2026-11-01 "not ready to start" still stands, so owner is not a start date).
+- Still no owner named anywhere I have read: hierarchical-file edit tool (proposed: editant, UNCONFIRMED; pm-ants is asking editant); Events in Synapse (board 359 design round, no lane); model-side cache layer (boundary with Fuel's scheduler unsettled); `presents` field beyond claude-code; D2 links for vault and file tools. pm-ants has put the four rows other than the edit tool to the PM; they stay "no owner" until it rules.
