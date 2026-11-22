@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.10
+
+- docs: `docs/SCOPING-SYNAPSE-EVENTS.md`, scoping note for events in Synapse (pm-ants [TASK] 2026-11-22); AGENT-STACK-GAPS.md corrected: Synapse has rooms, so it is not point-to-point only.
+
 ## 0.1.9
 
 - docs: AGENT-STACK-GAPS.md records agent-loop's answers (rig is its dependency; goose-agent, rmcp, codex-rs are not; no budget-governor owner yet).
