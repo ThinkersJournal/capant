@@ -51,4 +51,10 @@ Source: `ThinkersJournal/agent-loop` main via `gh api`; notes are DRAFT, nothing
 ## Open
 - agent-loop design-round date: pm-ants 2026-11-21 says no round is scheduled.
 - Answered by agent-loop 2026-11-21 (its message, read from its own docs on main): rig (rig-agent/rig-core 0.46.0) is its adopted engine and a Cargo.toml dependency; goose-agent alpha.13 and rmcp 3.8.0 are assessed only (docs/GOOSE-ASSESSMENT.md, docs/LOOP-CORE.md), neither a direct dependency; codex-rs is read only for E and G, not a dependency. So only rig is a candidate graph entry (provider for agent-loop, C); the others are not providers. Not re-verified here.
-- budget-governor: nothing of ours enforces one. rig-agent has max_turns and cumulative usage(); no spend cap or policy. agent-loop's view: the cap belongs at the Driver layer as a policy over that usage; the owner is a PM ruling (pm-ants takes it to the PM).
+- budget-governor: nothing of ours enforces one. rig-agent has max_turns and cumulative usage(); no spend cap or policy. agent-loop's view: the cap belongs at the Driver layer as a policy over that usage; the owner was a PM ruling.
+- PM ruling (relayed by pm-ants 2026-11-21, not re-read from the PM): budget-governor goes to agent-loop as a design note, no code yet. capant keeps this list current and reviews that note when it lands. Row A (budget-governor) owner: agent-loop (design note pending).
+
+## Owner check (2026-11-22)
+Each row above against agent-loop's answers (F and Open). Not checked against code.
+- Owner now known: budget-governor (agent-loop, per the ruling); harness-adapter (agent-loop, row A); rig as agent-loop's engine (agent-loop, C).
+- Still no owner named anywhere I have read: eval-harness (CireSnave: not started); hierarchical-file edit tool (AGENT-STACK: no owner); Events in Synapse (board 359 design round, no lane); model-side cache layer (boundary with Fuel's scheduler unsettled); `presents` field beyond claude-code; D2 links for vault and file tools. I add no owner for these: assigning one is a PM/pm-ants call. Question to pm-ants.
