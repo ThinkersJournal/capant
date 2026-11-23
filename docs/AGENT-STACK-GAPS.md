@@ -28,7 +28,7 @@ route-models (overmind partial), tool-providers (synapse partial), agent-lifecyc
 ## D. Named in AGENT-STACK.md but absent from the graph as a capability id
 | AGENT-STACK item | Why it is a gap |
 |---|---|
-| Events in Synapse (non-lane publishers, topic subscriptions) | Candidate with a CireSnave 2026-11-01 source; no capability id. Synapse is point-to-point only today (per AGENT-STACK). Board 359 design call. |
+| Events in Synapse (non-lane publishers, topic subscriptions) | Candidate with a CireSnave 2026-11-01 source; no capability id. Rooms (built, fan-out to joined members) are not events: no non-lane publisher, no typed events, no delivery to an offline subscriber. Scoped in `SCOPING-SYNAPSE-EVENTS.md`. Board 359 design call. |
 | Hierarchical-file edit tool (MCP) | Owner: EditAnt (editant confirmed 2026-11-22, relayed by pm-ants). Its MVP is Markdown heading-sections only (editant SPEC 2); JSON/TOML/code are a non-goal for now. So the gap is "other formats", not "the tool". No capability id yet. |
 | Model-side cache (KV, prefix) as its own layer | Folded into `run-model`; AGENT-STACK says the boundary with Fuel's scheduler is blurry. |
 | Split of A (model files / library / runner / server) | Graph already splits kernels, ml-library, model-files, run-model, serve-openai-api; matches the "A is at least three layers" revision. |
@@ -59,6 +59,25 @@ Each row above against agent-loop's answers (F and Open). Not checked against co
 - Owner now known: budget-governor (agent-loop, per the ruling); harness-adapter (agent-loop, row A); rig as agent-loop's engine (agent-loop, C); eval-harness (agent-loop, named with the harness adapter in the PM ruling, relayed by pm-ants 2026-11-22; CireSnave's 2026-11-01 "not ready to start" still stands, so owner is not a start date).
 - Hierarchical-file edit tool now has an owner: EditAnt (confirmed by editant 2026-11-22 via pm-ants; MVP Markdown heading-sections only, other formats a non-goal for now; SPEC 2 not read by capant). Four rows are unowned, ranked below owned rows (PM ruling 2026-11-21, relayed by pm-ants; demand orders work, never whether). When a lane has free capacity the highest is picked first. pm-ants has put them to the PM. Ranking below is capant's proposal, not a ruling:
   1. D2 links for vault and file tools: smallest and concrete (`tool-providers` lists synapse only; add secretant and file-tool links as providers). Scoped in `SCOPING-D2-VAULT-FILE-TOOLS.md` (capant took it 2026-11-22, pm-ants [TASK]).
-  2. Events in Synapse: board 359 design round, Synapse is point-to-point only today.
-  3. `presents` field beyond claude-code: graph schema question, cheap but touches PM-owned graph.
-  4. Model-side cache layer: boundary with Fuel's scheduler unsettled, so not yet specifiable.
+  2. Events in Synapse: board 359 design round; rooms give fan-out, the gap is non-lane publishers, typed events and offline delivery. Scoped in `SCOPING-SYNAPSE-EVENTS.md` (capant took it 2026-11-22, pm-ants [TASK]).
+  3. `presents` field beyond claude-code: graph schema question, cheap but touches PM-owned graph. Scoped in `SCOPING-PRESENTS-FIELD.md` (no schema change needed: the tool already validates and draws it; data and a definition are missing).
+  4. Named kv-cache, Fuel partial (pm-ants 2026-11-23). Scoped in `SCOPING-MODEL-SIDE-CACHE.md` (2026-11-22): Fuel's rows already split mechanism (Fuel) from policy (Lightbulb); what is missing is only a graph id. Blocked on the PM for the id only. Fuel lane confirmed `partial` 2026-11-23 (fuel origin/main f747717f4; `cargo test -p fuel-kv-pool`: 42 passed): block pool with prefix sharing and `CacheStats` counters built (tests `stats_count_hits_misses_commits_and_evictions`, `a_broken_chain_stops_at_the_first_miss`); session KV export/restore not started (Fuel ROADMAP row 132, lightbulb#275); the pool is not wired to a consumer inside Fuel.
+
+## Review of agent-loop's budget-governor note (2026-11-22)
+Reviewed `docs/BUDGET-GOVERNOR.md` at agent-loop branch `budget-governor`, commit 4946e7f (note only, no PR yet). Its source citations were spot-checked at agent-loop `1a8c892`: `max_turns` (`src/run.rs:35`), `Event::Usage` (`src/events.rs:24`), and the two `Usage` emits in `src/driver.rs` (compaction and the main call) all say what the note says. Not run; nothing in it is built.
+
+What it enforces, and where: an in-run cap (layer C) as a `BudgetPolicy` evaluated at turn boundaries, stopping through the existing soft stop; the fleet cap (layer H) is left to AgentLife, fed by the G `cost` report. That split is sound and creates no standing work.
+
+Points for agent-loop and the PM:
+1. **Fleet policy input is THROTTLE.md, not a limit the governor invents.** Portfolio CLAUDE.md says cost is "a routing constraint, not a stop-work order" and that throttling is read only from `THROTTLE.md`. A governor that stops runs on its own number would act as a stop-work order. The note cites the cost rule as the reason a fleet cap is wanted; it should say the cap is opt-in and its source is the PM-set status, with the in-run cap a per-run safety, not a fleet policy.
+2. **Token fields are `Option<u64>`** (`src/events.rs`), so an unreported counter is `None`. The note's "unknown is not zero" rule for cost should say the same for tokens: a `None` must not add 0 to the total. A cache-read or cache-write count is not in `Usage` (grep of `src/events.rs` for "cache": no hit), so a token cap over-counts cached input; say whether that is accepted.
+3. **Overshoot is bounded only by a turn plus a batch.** The policy runs after each response and a soft stop finishes the batch, so one parallel tool batch can run past the cap. State the bound, or note that it is accepted.
+4. **Budget scope across a resume.** The note makes stop-save-resume the path, but does not say whether cumulative usage carries over a resume. If it does, a resumed run stops again at once; if it does not, the cap is per-segment. Pick one (run, session or day) before decision 1.
+5. **Synapse "has no subscribe or topic" is stale.** Rooms are built at synapse 3f5726e (see `SCOPING-SYNAPSE-EVENTS.md`). The fleet-cap blocker is narrower: no non-lane publisher and no typed event, so a G `cost` report has no tool identity to post as. Decision 3 (Claude Code cost source, unowned) is untouched by this.
+6. **Eval-harness row:** consistent with this list: not started, CireSnave 2026-11-01 "not ready", owner agent-loop is not a start date.
+7. **Harness-adapter row:** consistent; its Synapse-transport blocker should cite point 5.
+
+Verdict: the note can go to the PM gate as a draft after points 1 and 4 are answered; 2, 3 and 5 are edits, not blockers. This is a review, not a ruling.
+
+### Closure of points 1 and 4 (2026-11-22)
+Read at agent-loop `origin/main` 9b82f7a (#51 merged), `docs/BUDGET-GOVERNOR.md`: point 1 is answered (lines 52-54: the fleet cap is opt-in and reads `THROTTLE.md`, "nothing here defaults to stopping a lane") and point 4 is answered (line 45: usage is not carried across a resume today; the host keeps the running total or saved state gains it, left as a decision). Both blockers in the verdict are cleared. Points 2, 3 and 5 were not re-read, so they stay open as edits. The note's status table still marks the in-run cap "designed, not built" and the fleet cap "not designed past section 3"; this list keeps `budget-governor` as owned by agent-loop, no provider.
