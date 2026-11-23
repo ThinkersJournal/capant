@@ -2,7 +2,8 @@
 
 ## 0.1.11
 
-- docs: ROADMAP R7 records that the `kv-cache` graph id exists and Fuel confirmed it `partial` (2026-11-23); remaining open items are the `presents` definition and the D2 provider links.
+- docs: ROADMAP R7 records that the `kv-cache` graph id exists and Fuel confirmed it `partial` (2026-11-23); the D2 provider links remain open.
+- docs: `docs/SCOPING-PRESENTS-FIELD.md` records the PM's acceptance and the build (`via` and the both-provides-and-presents rule in `tools/capability_graph.py`).
 
 ## 0.1.10
 
