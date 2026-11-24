@@ -19,3 +19,6 @@ Row 3 of the unowned stack-gap rows in `AGENT-STACK-GAPS.md`. A scoping note, no
 
 ## Cost and owner
 Tool change (rule plus `via`) is in `tools/capability_graph.py` and `tools/tests/test_capability_graph.py`, which capant owns: small. Data edits to `CAPABILITY-GRAPH.json` need the PM's acceptance, as for batch 2. Blocked on: the PM accepting the definition above, and on the owners of ollama and lightbulb for the candidates.
+
+## Decision and build (2026-11-23)
+The PM accepted the proposal as written (pm-ants [TASK] 2026-11-23). Built in `C:\Projects	ools\capability_graph.py` (not a git repo): `presents` entries are an id or `[id, via]`; `via` is a project id or `external:<name>` and the matrix prints it under the legend; `check` errors when a project both provides (built or partial) and presents one capability, or when a via is neither. Tests in `tools/tests/test_capability_graph.py` (class `Presents`; mutating the both-rule makes `test_both_built_and_presented_is_an_error` fail). No data edits to `CAPABILITY-GRAPH.json`: the ollama and lightbulb candidates stay unverified until their owners answer.
