@@ -14,6 +14,9 @@ D2 is the tool-provider half of layer D: MCP servers an agent calls. AGENT-STACK
 - Lanes editing large files such as PORTFOLIO-ROADMAP.md (the CireSnave 2026-11-01 motivation).
 - `permission-policy` (E) must gate the vault tool; `human-approval` (consent, built) is the asker.
 
+## Status 2026-11-24
+Slice items 1 and 4 are done (PM edit to `CAPABILITY-GRAPH.json`, read not edited by capant): `tool-provider-vault` and `tool-provider-files` exist, each `needs: [permission-policy]`; editant provides `tool-provider-files` as `planned`. Item 3 is drafted in `THREAT-NOTE-VAULT-TOOL.md`. D2 is no longer blocked on the PM. CireSnave ruled board 498: A on the threat note (2026-11-24): it is the ruled boundary and SecretAnt's lane owns the vault face.
+
 ## Smallest first slice (all docs or graph rows, nothing built)
 1. Split the graph capability: `tool-providers` stays for messaging; add `tool-provider-vault` and `tool-provider-files`, each `needs: [permission-policy]`, each initially with no `provides` row (a PM edit to `CAPABILITY-GRAPH.json`; capant proposes, does not make it).
 2. (Done 2026-11-22) the `secretant` graph row is refreshed.
