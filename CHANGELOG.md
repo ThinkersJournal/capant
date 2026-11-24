@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.12
+
+- ci: portfolio.yml pin moved to coderipper dc45e36 (pm-ants [TASK] 2026-11-24).
+
 ## 0.1.11
 
 - docs: ROADMAP R7 records that the `kv-cache` graph id exists and Fuel confirmed it `partial` (2026-11-23); the D2 provider links remain open.
