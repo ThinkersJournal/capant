@@ -1,5 +1,7 @@
 # Threat note: an agent-facing vault tool (draft)
 
+**Status 2026-11-24: ruled boundary.** CireSnave ruled board 498: A ("498: A.", relayed by pm-ants from the PM). SecretAnt's lane owns the face and works from this note. The rest of this page is the boundary as drafted; the Open list below is what the owner still decides.
+
 Docs only; nothing built. Item 3 of `SCOPING-D2-VAULT-FILE-TOOLS.md`, drafted 2026-11-24 on a PM [TASK] relayed by pm-ants. A proposal for the PM and CireSnave to decide before any owner starts; not a ruling. Facts from the SecretAnt README at secretant `origin/main` f81a0a8 (read, not run). Graph id: `tool-provider-vault` (needs `permission-policy`; no provider).
 
 ## Why decide first
@@ -29,7 +31,7 @@ SecretAnt states a same-user limit: another program running as the same user can
 5. The agent never supplies the unlock: the host opens the store, not a tool argument.
 
 ## Open
-- Owner of the face: SecretAnt's lane or Synapse's (neither named; carried from the scoping note).
+- Owner of the face: SecretAnt's lane (ruled 2026-11-24).
 - Whether delivery to an allow-listed path is itself acceptable when the agent can later read that file (it can, via the file tool): the pair `tool-provider-vault` + `tool-provider-files` needs a path rule that keeps delivered secrets out of the file tool's reach. Not tested.
 - Whether the same-user limit makes any agent-facing face worth building; "no vault tool, delivery done by the human or a host step" is a valid outcome of this note.
 
