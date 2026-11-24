@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.13
+
+- docs: `GLOSSARY.md` (DOC-009).
+- docs: `docs/THREAT-NOTE-VAULT-TOOL.md`, the ruled boundary for an agent-facing vault tool (CireSnave board 498: A); D2 links to `tool-provider-vault` and `tool-provider-files` recorded in `SCOPING-D2-VAULT-FILE-TOOLS.md` and `AGENT-STACK-GAPS.md`.
+- docs: budget-governor review points 2 and 3 closed, point 5 left open (agent-loop 9b82f7a).
+
 ## 0.1.12
 
 - ci: portfolio.yml pin moved to coderipper dc45e36 (pm-ants [TASK] 2026-11-24).
