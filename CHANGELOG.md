@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.14
+
+- ci: portfolio.yml pin moved to coderipper 467fd259 (CODERIPPER_VERSION 0.48.1; pm-ants [TASK] 2026-11-25).
+
 ## 0.1.13
 
 - docs: `GLOSSARY.md` (DOC-009).
